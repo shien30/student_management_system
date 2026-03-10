@@ -146,3 +146,17 @@ fn main() {
                 }
             }
 
+ 3 => {
+                if students.is_empty() {
+                    println!("No students in the system.");
+                } else {
+                    println!("{:<5} | {:<15} | {:<5} | {:<10} | {:<5}", "ID", "Name", "Age", "Subjects", "Average");
+                    println!("{:-<50}", ""); // Prints a dividing line
+                    
+                    for s in &students { // Borrowing the vector immutably
+                        println!("{:<5} | {:<15} | {:<5} | {:<10} | {:.2}", 
+                                 s.id, s.name, s.age, s.scores.len(), s.average());
+                    }
+                }
+            }
+
