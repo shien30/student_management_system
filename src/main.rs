@@ -115,3 +115,20 @@ fn main() {
    let choice = get_u32("Enter your choice: ");
 
         match choice {
+ 1 => {
+                let id = get_u32("Enter Student ID: ");
+                
+                // Bonus: Prevent duplicate IDs by checking if any student already has this ID
+                if students.iter().any(|s| s.id == id) {
+                    println!("Error: Student with ID {} already exists!", id);
+                    continue; // Skips the rest of this loop iteration and shows the menu again
+                }
+
+                let name = get_string("Enter Student Name: ");
+                let age = get_u32("Enter Student Age: ");
+                
+                // name is moved (ownership transferred) into the struct here
+                let new_student = Student::new(id, name, age);
+                students.push(new_student);
+                println!("Student added successfully!");
+            }
