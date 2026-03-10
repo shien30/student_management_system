@@ -97,110 +97,109 @@ fn main() {
             }
         }
     }
-    fn main() {
-        // Here is our in-memory database!
-        // It must be `mut` because we will add and remove students.
-        let mut students: Vec<Student> = Vec::new();
 
-        loop {
-            println!("\n=== STUDENT MANAGEMENT SYSTEM ===");
-            println!("1. Add Student");
-            println!("2. Add Score to Student");
-            println!("3. View All Students");
-            println!("4. View Single Student Report");
-            println!("5. Remove Student");
-            println!("6. Exit");
+    // Here is our in-memory database!
+    // It must be `mut` because we will add and remove students.
+    let mut students: Vec<Student> = Vec::new();
 
-            let choice = get_u32("Enter your choice: ");
+    loop {
+        println!("\n=== STUDENT MANAGEMENT SYSTEM ===");
+        println!("1. Add Student");
+        println!("2. Add Score to Student");
+        println!("3. View All Students");
+        println!("4. View Single Student Report");
+        println!("5. Remove Student");
+        println!("6. Exit");
 
-            match choice {
-                1 => {
-                    let id = get_u32("Enter Student ID: ");
+        let choice = get_u32("Enter your choice: ");
 
-                    // Bonus: Prevent duplicate IDs by checking if any student already has this ID
-                    if students.iter().any(|s| s.id == id) {
-                        println!("Error: Student with ID {} already exists!", id);
-                        continue; // Skips the rest of this loop iteration and shows the menu again
-                    }
+        match choice {
+            1 => {
+                let id = get_u32("Enter Student ID: ");
 
-                    let name = get_string("Enter Student Name: ");
-                    let age = get_u32("Enter Student Age: ");
-
-                    // name is moved (ownership transferred) into the struct here
-                    let new_student = Student::new(id, name, age);
-                    students.push(new_student);
-                    println!("Student added successfully!");
-                }
-                2 => {
-                    let id = get_u32("Enter Student ID: ");
-
-                    // We need a MUTABLE reference to the student to change their scores.
-                    // .iter_mut() allows us to borrow the vector items mutably.
-                    if let Some(student) = students.iter_mut().find(|s| s.id == id) {
-                        let score = get_u32("Enter Score to add: ");
-                        student.add_score(score);
-                        println!("Score added successfully!");
-                    } else {
-                        println!("Error: Student not found.");
-                    }
+                // Bonus: Prevent duplicate IDs by checking if any student already has this ID
+                if students.iter().any(|s| s.id == id) {
+                    println!("Error: Student with ID {} already exists!", id);
+                    continue; // Skips the rest of this loop iteration and shows the menu again
                 }
 
-                3 => {
-                    if students.is_empty() {
-                        println!("No students in the system.");
-                    } else {
-                        println!(
-                            "{:<5} | {:<15} | {:<5} | {:<10} | {:<5}",
-                            "ID", "Name", "Age", "Subjects", "Average"
-                        );
-                        println!("{:-<50}", ""); // Prints a dividing line
+                let name = get_string("Enter Student Name: ");
+                let age = get_u32("Enter Student Age: ");
 
-                        for s in &students {
-                            // Borrowing the vector immutably
-                            println!(
-                                "{:<5} | {:<15} | {:<5} | {:<10} | {:.2}",
-                                s.id,
-                                s.name,
-                                s.age,
-                                s.scores.len(),
-                                s.average()
-                            );
-                        }
-                    }
-                }
-
-                4 => {
-                    let id = get_u32("Enter Student ID to view: ");
-
-                    // Immutable borrow to find and display
-                    if let Some(student) = students.iter().find(|s| s.id == id) {
-                        student.display();
-                    } else {
-                        println!("Error: Student not found.");
-                    }
-                }
-                5 => {
-                    let id = get_u32("Enter Student ID to remove: ");
-
-                    let initial_len = students.len();
-                    // .retain() keeps only elements that match the condition.
-                    // If the ID matches, it returns false, dropping that student from the vector.
-                    students.retain(|s| s.id != id);
-
-                    if students.len() < initial_len {
-                        println!("Student removed successfully!");
-                    } else {
-                        println!("Error: Student not found.");
-                    }
-                }
-
-                6 => {
-                    println!("Exiting program");
-                    break; // This is the ONLY way out of the loop!
-                }
-
-                _ => println!("Invalid choice. Please select 1-6."),
+                // name is moved (ownership transferred) into the struct here
+                let new_student = Student::new(id, name, age);
+                students.push(new_student);
+                println!("Student added successfully!");
             }
+            2 => {
+                let id = get_u32("Enter Student ID: ");
+
+                // We need a MUTABLE reference to the student to change their scores.
+                // .iter_mut() allows us to borrow the vector items mutably.
+                if let Some(student) = students.iter_mut().find(|s| s.id == id) {
+                    let score = get_u32("Enter Score to add: ");
+                    student.add_score(score);
+                    println!("Score added successfully!");
+                } else {
+                    println!("Error: Student not found.");
+                }
+            }
+
+            3 => {
+                if students.is_empty() {
+                    println!("No students in the system.");
+                } else {
+                    println!(
+                        "{:<5} | {:<15} | {:<5} | {:<10} | {:<5}",
+                        "ID", "Name", "Age", "Subjects", "Average"
+                    );
+                    println!("{:-<50}", ""); // Prints a dividing line
+
+                    for s in &students {
+                        // Borrowing the vector immutably
+                        println!(
+                            "{:<5} | {:<15} | {:<5} | {:<10} | {:.2}",
+                            s.id,
+                            s.name,
+                            s.age,
+                            s.scores.len(),
+                            s.average()
+                        );
+                    }
+                }
+            }
+
+            4 => {
+                let id = get_u32("Enter Student ID to view: ");
+
+                // Immutable borrow to find and display
+                if let Some(student) = students.iter().find(|s| s.id == id) {
+                    student.display();
+                } else {
+                    println!("Error: Student not found.");
+                }
+            }
+            5 => {
+                let id = get_u32("Enter Student ID to remove: ");
+
+                let initial_len = students.len();
+                // .retain() keeps only elements that match the condition.
+                // If the ID matches, it returns false, dropping that student from the vector.
+                students.retain(|s| s.id != id);
+
+                if students.len() < initial_len {
+                    println!("Student removed successfully!");
+                } else {
+                    println!("Error: Student not found.");
+                }
+            }
+
+            6 => {
+                println!("Exiting program");
+                break; // This is the ONLY way out of the loop!
+            }
+
+            _ => println!("Invalid choice. Please select 1-6."),
         }
     }
 }
