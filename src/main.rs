@@ -132,3 +132,17 @@ fn main() {
                 students.push(new_student);
                 println!("Student added successfully!");
             }
+   2 => {
+                let id = get_u32("Enter Student ID: ");
+                
+                // We need a MUTABLE reference to the student to change their scores.
+                // .iter_mut() allows us to borrow the vector items mutably.
+                if let Some(student) = students.iter_mut().find(|s| s.id == id) {
+                    let score = get_u32("Enter Score to add: ");
+                    student.add_score(score);
+                    println!("Score added successfully!");
+                } else {
+                    println!("Error: Student not found.");
+                }
+            }
+
