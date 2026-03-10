@@ -112,3 +112,6 @@ fn main() {
         println!("6. Exit");
 
    
+   let choice = get_u32("Enter your choice: ");
+
+        match choice {
