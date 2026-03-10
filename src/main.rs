@@ -170,5 +170,19 @@ fn main() {
                     println!("Error: Student not found.");
                 }
             }
+            5 => {
+                let id = get_u32("Enter Student ID to remove: ");
+                
+                let initial_len = students.len();
+                // .retain() keeps only elements that match the condition. 
+                // If the ID matches, it returns false, dropping that student from the vector.
+                students.retain(|s| s.id != id);
+                
+                if students.len() < initial_len {
+                    println!("Student removed successfully!");
+                } else {
+                    println!("Error: Student not found.");
+                }
+            }
 
 
