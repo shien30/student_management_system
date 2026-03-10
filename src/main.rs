@@ -160,3 +160,15 @@ fn main() {
                 }
             }
 
+            4 => {
+                let id = get_u32("Enter Student ID to view: ");
+                
+                // Immutable borrow to find and display
+                if let Some(student) = students.iter().find(|s| s.id == id) {
+                    student.display();
+                } else {
+                    println!("Error: Student not found.");
+                }
+            }
+
+
